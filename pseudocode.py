@@ -1,3 +1,62 @@
+####################################################################################
+# Input:
+#   - R: The centromere sequence to be decomposed
+#   - Blocks: Set of 12 known monomers (as strings)
+#   - d: Penalty for insertions or deletions
+#   - r: Penalty for mismatches
+#   - match_score: Reward for matches
+
+# Output:
+#   - Optimal decomposition of R into monomers
+
+# Steps:
+
+# 1. Initialize a DP table:
+#    Let `score[b][i][j]` represent the best score for aligning the i-prefix of monomer `b` 
+#    to the j-prefix of sequence `R`.
+
+# 2. Base case initialization:
+#    For all b in Blocks and all i:
+#       score[b][0][j] = 0  # No alignment at the start
+#    For all j:
+#       score[0][i][0] = -i * d  # Initial gaps in alignment
+
+# 3. Recurrence relation:
+#    For each block `b` in Blocks:
+#       For i = 1 to length(b):
+#          For j = 1 to length(R):
+#             # Match or mismatch
+#             score[b][i][j] = max(
+#                 score[b][i-1][j-1] + match_score if b[i] == R[j],
+#                 score[b][i-1][j-1] - r if b[i] != R[j]
+#             )
+#             # Insertions or deletions
+#             score[b][i][j] = max(score[b][i][j],
+#                                  score[b][i-1][j] - d,  # Deletion in block
+#                                  score[b][i][j-1] - d)  # Insertion in sequence
+
+#    # Handle transitions between blocks:
+#    For each b in Blocks:
+#       For each ending position of block `b`:
+#          Connect to all starting positions of other blocks via zero-cost edges:
+#             score[next_block][0][j] = max(score[next_block][0][j], score[b][length(b)][j])
+
+# 4. Compute final score:
+#    Let `best_score` = max(score[b][length(b)][length(R)] for all b in Blocks)
+#    Backtrack to reconstruct the optimal path:
+#       - Start from the monomer and position achieving `best_score`
+#       - Trace back through the table to determine the sequence of monomers
+
+# 5. Return the optimal sequence of monomers and their alignments.
+
+
+####################################################################################
+
+
+
+
+
+
 def string_decomposition(sequence, blocks, match_score=1, mismatch_penalty=-1, indel_penalty=-2):
     """
     Perform string decomposition of `sequence` using `blocks` (monomers).
