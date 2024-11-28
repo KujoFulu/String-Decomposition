@@ -63,7 +63,6 @@ def string_decomposition(sequence, blocks, match_score=1, mismatch_penalty=-1, i
         if dp[block_id][len(blocks[block_id])][sequence_len] > best_score:
             best_score = dp[block_id][len(blocks[block_id])][sequence_len]
             best_position = (block_id, len(blocks[block_id]), sequence_len)
-    print(best_score, best_position)
 
     # Backtrack to reconstruct the monomer sequence and alignment details
     result_sequence = []
@@ -76,7 +75,6 @@ def string_decomposition(sequence, blocks, match_score=1, mismatch_penalty=-1, i
             result_sequence.append(block_id)
             alignments.append((blocks[block_id], j))  # (block, end)
         current = path[block_id][i][j]
-        print(current)
 
     result_sequence.reverse()
     alignments.reverse()
