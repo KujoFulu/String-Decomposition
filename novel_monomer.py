@@ -58,3 +58,32 @@ monomer_counts
 #D_3_DXZ1*_doubled/451_620/R'      1
 #C_2_DXZ1*_doubled/280_450/R'      1
 #B_1_DXZ1*_doubled/94_279/R'       1
+
+k = "ACCGTCTGGTTTTTATATGAAGTTCTTTCCTTCACTACCACAGGCCTCAAAGCGGTCCAAATCTCCACTTGCAGATTCTACAAAAAGAGTGTTTGCAAACTGCTCTATCAAAGGAATGTTCAACTCTGGGAGTTGAATGCAATCATCACAGAGCAGTTTCTGAGAATGCT"
+f = "TCCGTTTGCCTTTTATATGAAGTTCCTTCCTGTACTACCGTAGGCCTCAAAGCAGTCCAAATCTCCATTTGCAGATTCTACAAAAAGAGTGATTCCAATCTGCTCTATCAATAGGATTGTTCAACTCCATGAGTTGAATGCCATCCTCACAAAGTCGTTTCTGAGAATGCT"
+
+#Build the novel monomer mentioned in the paper
+print(k[0:70]+f[len(f)-101:])
+#ACCGTCTGGTTTTTATATGAAGTTCTTTCCTTCACTACCACAGGCCTCAAAGCGGTCCAAATCTCCACTTGCAGATTCTACAAAAAGAGTGATTCCAATCTGCTCTATCAATAGGATTGTTCAACTCCATGAGTTGAATGCCATCCTCACAAAGTCGTTTCTGAGAATGCT
+
+#Since there are 3 F regions with low ideneity, I saved them in lowIdentity_F5_regions_reads.fasta
+# Load the filtered rows with identity < 80
+filtered_data_80 = pd.read_csv('filtered_rows_identity_less_than_80.csv')
+
+# Filter rows for F_5 monomer
+f5_regions = filtered_data_80[filtered_data_80['best-monomer'] == "F_5_DXZ1*_doubled/789_959/R'"]
+
+# Read the sequence from the second line of the read.fa file
+with open('read.fa', 'r') as fasta_file:
+    fasta_content = fasta_file.readlines()
+sequence = fasta_content[1].strip()
+
+# Extract the regions and save to a new FASTA file
+f5_reads = []
+for _, row in f5_regions.iterrows():
+    start_pos = int(row['start-pos'])
+    end_pos = int(row['end-pos'])
+    f5_reads.append(f">{row['read-name']}\n{sequence[start_pos:end_pos]}")
+
+with open('lowIdentity_F5_regions_reads.fasta', 'w') as f:
+    f.write("\n".join(f5_reads))
