@@ -15,4 +15,4 @@ def create_new_fasta_with_monomer(input_fasta, output_fasta, new_sequence):
 new_monomer = 'ACCGTCTGGTTTTTATATGAAGTTCTTTCCTTCACTACCACAGGCCTCAAAGCGGTCCAAATCTCCACTTGCAGATTCTACAAAAAGAGTGATTCCAATCTGCTCTATCAATAGGATTGTTCAACTCCATGGGTTGAATGCCATCCTCACAAATTAGTTTCTGAGAATGC'
 
 # Create new file
-create_new_fasta_with_monomer("test_data/DXZ1_star_monomers.fa", "test_data/DXZ1_star_monomers_new.fa", new_monomer)
+create_new_fasta_with_monomer("../test_data/DXZ1_star_monomers.fa", "../test_data/DXZ1_star_monomers_new.fa", new_monomer)
